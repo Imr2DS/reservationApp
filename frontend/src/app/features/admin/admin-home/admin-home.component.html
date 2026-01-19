@@ -1,0 +1,115 @@
+<!-- Navbar -->
+<app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
+
+
+<div class="admin-container">
+  <!-- Header Section -->
+  <div class="header">
+    <div class="header-content">
+      <h1>Gestion des Ressources</h1>
+      <button class="btn-add" routerLink="/admin/new-resource">
+        <span class="icon">+</span>
+        Nouvelle Ressource
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="filterResources()"
+        placeholder="Rechercher une ressource..."
+        class="search-input"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <div class="filter-group">
+      <select
+        [(ngModel)]="filterType"
+        (ngModelChange)="filterResources()"
+        class="filter-select"
+      >
+        <option value="">Tous les types</option>
+        <option *ngFor="let type of resourceTypes" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+
+
+      <select
+        [(ngModel)]="sortBy"
+        (ngModelChange)="sortResources()"
+        class="filter-select"
+      >
+        <option value="nom">Nom</option>
+        <option value="type">Type</option>
+        <option value="capacite">Capacité</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert-error">
+    <span class="alert-icon">⚠️</span>
+    {{ errorMessage }}
+    <button class="alert-close" (click)="errorMessage = ''">×</button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des ressources...</p>
+  </div>
+
+  <!-- Resources Grid -->
+  <div *ngIf="!loading && filteredResources.length > 0" class="resources-grid">
+    <div *ngFor="let resource of filteredResources" class="resource-card">
+      <div class="card-header">
+        <h3 class="card-title">{{ resource.nom }}</h3>
+        <span class="card-badge">{{ resource.type }}</span>
+      </div>
+
+      <div class="card-body">
+        <div class="card-info">
+          <span class="info-label">Capacité:</span>
+          <span class="info-value">{{ resource.capacite }}</span>
+        </div>
+
+        <p class="card-description">
+          {{ resource.description || 'Aucune description disponible' }}
+        </p>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-edit" (click)="editResource(resource.id)">✏️ Modifier</button>
+        <button class="btn-delete" (click)="deleteResource(resource.id)">🗑️ Supprimer</button>
+        <button class="btn-info" (click)="viewDetails(resource.id)">🔍 Détails</button>
+        <button class="btn-stats" (click)="viewStats(resource.id)">📊 Stats</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredResources.length === 0" class="empty-state">
+    <div class="empty-icon">📦</div>
+    <h3>Aucune ressource trouvée</h3>
+    <p>
+      {{ searchTerm || filterType
+        ? 'Aucune ressource ne correspond à vos critères de recherche'
+        : 'Commencez par ajouter votre première ressource'
+      }}
+    </p>
+    <button class="btn-add" routerLink="/admin/new-resource">
+      <span class="icon">+</span>
+      Ajouter une Ressource
+    </button>
+  </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>

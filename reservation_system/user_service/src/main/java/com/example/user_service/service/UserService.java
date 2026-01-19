@@ -16,11 +16,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     // ========================= REGISTER =========================
@@ -32,7 +35,6 @@ public class UserService {
 
         user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
 
-        // Par défaut, role USER si non précisé
         if (user.getRole() == null) {
             user.setRole(Role.USER);
         }
@@ -41,8 +43,8 @@ public class UserService {
     }
 
     // ========================= LOGIN =========================
-    // ========================= LOGIN =========================
     public ResponseEntity<Object> login(String email, String motDePasse) {
+
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isEmpty()) {
@@ -55,15 +57,16 @@ public class UserService {
             return ResponseEntity.status(401).body("Email ou mot de passe incorrect");
         }
 
-        // Retourner un objet avec toutes les infos nécessaires pour Angular
+        String token = jwtService.generateToken(user.getEmail());
+
         Map<String, Object> response = new HashMap<>();
         response.put("id", user.getId());
         response.put("nom", user.getNom());
         response.put("prenom", user.getPrenom());
         response.put("email", user.getEmail());
-        response.put("role", user.getRole().name()); // important !
+        response.put("role", user.getRole().name());
+        response.put("token", token);
 
         return ResponseEntity.ok(response);
     }
-
 }

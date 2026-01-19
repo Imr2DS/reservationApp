@@ -1,0 +1,49 @@
+<div *ngIf="loading">
+  <p>Chargement...</p>
+</div>
+
+<div *ngIf="reservation && !loading">
+
+  <h3>Détails de la réservation</h3>
+
+  <p>
+    <strong>Date de début :</strong>
+    {{ reservation.startDate | date:'dd/MM/yyyy HH:mm' }}
+  </p>
+
+  <p>
+    <strong>Date de fin :</strong>
+    {{ reservation.endDate | date:'dd/MM/yyyy HH:mm' }}
+  </p>
+
+  <p>
+    <strong>Statut :</strong>
+    {{ reservation.status }}
+  </p>
+
+  <hr />
+
+  <h3>Ressource réservée</h3>
+
+  <div *ngIf="resource">
+    <p>
+      <strong>Nom :</strong>
+      {{ resource.nom }}
+    </p>
+
+    <p *ngIf="resource.description">
+      <strong>Description :</strong>
+      {{ resource.description }}
+    </p>
+
+    <p *ngIf="resource.type">
+      <strong>Type :</strong>
+      {{ resource.type }}
+    </p>
+  </div>
+
+</div>
+
+<div *ngIf="errorMessage">
+  <p class="error">{{ errorMessage }}</p>
+</div>

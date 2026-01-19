@@ -1,0 +1,31 @@
+<div class="details-container">
+  <h2>Détails ressource</h2>
+
+  <div *ngIf="loading">Chargement...</div>
+  <div *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <!-- Détails ressource -->
+  <div *ngIf="resource">
+    <p><b>Nom :</b> {{ resource.nom }}</p>
+    <p><b>Type :</b> {{ resource.type }}</p>
+    <p><b>Capacité :</b> {{ resource.capacite }}</p>
+    <p><b>Description :</b> {{ resource.description }}</p>
+  </div>
+
+  <hr />
+
+  <!-- Réservations de la ressource -->
+  <h3>Réservations</h3>
+
+  <div *ngIf="reservations.length === 0">
+    Aucune réservation pour cette ressource.
+  </div>
+
+  <ul *ngIf="reservations.length > 0">
+    <li *ngFor="let r of reservations">
+      <b>Début :</b> {{ r.startDate | date:'short' }}
+      <br />
+      <b>Fin :</b> {{ r.endDate | date:'short' }}
+    </li>
+  </ul>
+</div>

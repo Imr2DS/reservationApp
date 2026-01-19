@@ -1,0 +1,171 @@
+<!-- Navbar -->
+<app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
+
+<!-- Sidebar -->
+<app-sidebar [isOpen]="isSidebarOpen" (close)="closeSidebar()"></app-sidebar>
+
+<div class="details-container">
+  <!-- Header -->
+  <div class="page-header">
+    <button class="btn-back" (click)="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Retour
+    </button>
+    <h1>Détails de la ressource</h1>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loadingResource" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des informations...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorResource" class="alert-error">
+    <span class="alert-icon">⚠️</span>
+    {{ errorResource }}
+  </div>
+
+  <!-- Resource Info -->
+  <div *ngIf="!loadingResource && resource" class="content-grid">
+    <!-- Resource Card -->
+    <div class="info-card">
+      <div class="card-header">
+        <h2>{{ resource.nom }}</h2>
+        <span class="badge-type">{{ resource.type }}</span>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Capacité
+          </span>
+          <span class="info-value">{{ resource.capacite }} personnes</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">
+            <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            Description
+          </span>
+          <span class="info-value">{{ resource.description || 'Aucune description' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reservations Section -->
+    <div class="reservations-section">
+      <!-- Loading Reservations -->
+      <div *ngIf="loadingReservations" class="loading-small">
+        <div class="spinner-small"></div>
+        <p>Chargement des réservations...</p>
+      </div>
+
+      <!-- Error Reservations -->
+      <div *ngIf="errorReservations" class="alert-error">
+        <span class="alert-icon">⚠️</span>
+        {{ errorReservations }}
+      </div>
+
+      <!-- Current Reservations -->
+      <div *ngIf="!loadingReservations" class="reservation-card">
+        <div class="reservation-header current">
+          <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <h3>Réservations en cours</h3>
+          <span class="count-badge current">{{ currentReservations.length }}</span>
+        </div>
+        
+        <div *ngIf="currentReservations.length > 0" class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Utilisateur</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of currentReservations">
+                <td><span class="id-badge">#{{ r.id }}</span></td>
+                <td>{{ r.startDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ r.endDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ r.userId }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div *ngIf="currentReservations.length === 0" class="empty-message">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <p>Aucune réservation en cours</p>
+        </div>
+      </div>
+
+      <!-- Upcoming Reservations -->
+      <div *ngIf="!loadingReservations" class="reservation-card">
+        <div class="reservation-header upcoming">
+          <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <h3>Réservations à venir</h3>
+          <span class="count-badge upcoming">{{ upcomingReservations.length }}</span>
+        </div>
+        
+        <div *ngIf="upcomingReservations.length > 0" class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Utilisateur</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of upcomingReservations">
+                <td><span class="id-badge">#{{ r.id }}</span></td>
+                <td>{{ r.startDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ r.endDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ r.userId }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div *ngIf="upcomingReservations.length === 0" class="empty-message">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <p>Aucune réservation à venir</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>

@@ -1,0 +1,147 @@
+<!-- Navbar -->
+<app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
+
+<!-- Sidebar -->
+<app-sidebar [isOpen]="isSidebarOpen" (close)="closeSidebar()"></app-sidebar>
+
+<div class="stats-container">
+  <!-- Header -->
+  <div class="page-header">
+    <button class="btn-back" (click)="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Retour
+    </button>
+    <h1>Statistiques de la ressource</h1>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="alert-error">
+    <span class="alert-icon">⚠️</span>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des statistiques...</p>
+  </div>
+
+  <!-- Resource Info & Stats -->
+  <div *ngIf="!loading && resource" class="content-wrapper">
+    <!-- Resource Card -->
+    <div class="resource-info-card">
+      <div class="info-header">
+        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        </svg>
+        <div class="info-content">
+          <h2>{{ resource.nom }}</h2>
+          <div class="info-meta">
+            <span class="meta-badge">{{ resource.type }}</span>
+            <span class="meta-text">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              {{ resource.capacite }} personnes
+            </span>
+          </div>
+        </div>
+      </div>
+      <p class="info-description">{{ resource.description || 'Aucune description' }}</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <!-- Total Reservations -->
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>Total réservations</h3>
+          <div class="stat-value">{{ total }}</div>
+          <p class="stat-label">Toutes périodes confondues</p>
+        </div>
+      </div>
+
+      <!-- Past Reservations -->
+      <div class="stat-card past">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 8 10"></polyline>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>Passées</h3>
+          <div class="stat-value">{{ past }}</div>
+          <p class="stat-label">Réservations terminées</p>
+        </div>
+      </div>
+
+      <!-- Current Reservations -->
+      <div class="stat-card current">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>En cours</h3>
+          <div class="stat-value">{{ current }}</div>
+          <p class="stat-label">Réservations actives</p>
+        </div>
+      </div>
+
+      <!-- Upcoming Reservations -->
+      <div class="stat-card upcoming">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>À venir</h3>
+          <div class="stat-value">{{ upcoming }}</div>
+          <p class="stat-label">Réservations planifiées</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Occupation Rate -->
+    <div class="occupation-card">
+      <div class="occupation-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="20" x2="12" y2="10"></line>
+          <line x1="18" y1="20" x2="18" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="16"></line>
+        </svg>
+        <h3>Taux d'occupation</h3>
+      </div>
+      <div class="occupation-content">
+        <div class="occupation-value">{{ occupationRate }}%</div>
+        <div class="occupation-bar">
+          <div class="occupation-fill" [style.width.%]="occupationRate"></div>
+        </div>
+        <p class="occupation-label">
+          Basé sur les réservations en cours par rapport au total
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>

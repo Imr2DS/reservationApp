@@ -1,0 +1,156 @@
+<!-- Navbar -->
+<app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
+
+<!-- Sidebar -->
+<app-sidebar [isOpen]="isSidebarOpen" (close)="closeSidebar()"></app-sidebar>
+
+<div class="user-container">
+  <!-- Header Section -->
+  <div class="header">
+    <div class="header-content">
+      <div class="header-title-wrapper">
+        <h1>Ressources Disponibles</h1>
+        <button class="btn-new-reservation" routerLink="/users/reservations/new">
+          <span class="icon">+</span>
+          Nouvelle Réservation
+        </button>
+      </div>
+      <div class="header-info">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>Trouvez et réservez la ressource dont vous avez besoin</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="filterResources()"
+        placeholder="Rechercher une ressource..."
+        class="search-input"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <div class="filter-group">
+      <select
+        [(ngModel)]="filterType"
+        (ngModelChange)="filterResources()"
+        class="filter-select"
+      >
+        <option value="">Tous les types</option>
+        <option *ngFor="let type of resourceTypes" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+
+      <select
+        [(ngModel)]="sortBy"
+        (ngModelChange)="sortResources()"
+        class="filter-select"
+      >
+        <option value="nom">Nom</option>
+        <option value="type">Type</option>
+        <option value="capacite">Capacité</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert-error">
+    <span class="alert-icon">⚠️</span>
+    {{ errorMessage }}
+    <button class="alert-close" (click)="errorMessage = ''">×</button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des ressources...</p>
+  </div>
+
+  <!-- Resources Grid -->
+  <div *ngIf="!loading && filteredResources.length > 0" class="resources-grid">
+    <div *ngFor="let resource of filteredResources" class="resource-card">
+      <div class="card-header">
+        <h3 class="card-title">{{ resource.nom }}</h3>
+        <span class="card-badge">{{ resource.type }}</span>
+      </div>
+
+      <div class="card-body">
+        <div class="card-info">
+          <svg class="info-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span class="info-label">Capacité:</span>
+          <span class="info-value">{{ resource.capacite }} personnes</span>
+        </div>
+
+        <p class="card-description">
+          {{ resource.description || 'Aucune description disponible' }}
+        </p>
+
+        <!-- Availability Badge -->
+        <div class="availability-badge available">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span>Disponible</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-details" (click)="viewDetails(resource.id)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          Détails
+        </button>
+        <button class="btn-reserve" (click)="reserveResource(resource.id)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Réserver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredResources.length === 0" class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h3>Aucune ressource trouvée</h3>
+    <p>
+      {{ searchTerm || filterType
+        ? 'Aucune ressource ne correspond à vos critères de recherche'
+        : 'Aucune ressource n\'est disponible pour le moment'
+      }}
+    </p>
+    <button class="btn-reset" (click)="resetFilters()" *ngIf="searchTerm || filterType">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="1 4 1 10 7 10"></polyline>
+        <polyline points="23 20 23 14 17 14"></polyline>
+        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+      </svg>
+      Réinitialiser les filtres
+    </button>
+  </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>
