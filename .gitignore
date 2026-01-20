@@ -1,15 +1,18 @@
 # ======================
 # Node / Angular
 # ======================
-user_frontend/node_modules/
-user_frontend/dist/
-user_frontend/.angular/
-user_frontend/.cache/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.cache/
 
 # ======================
 # Java / Spring Boot
 # ======================
 **/target/
+**/*.jar
+**/*.war
+**/*.class
 **/*.log
 
 # ======================
@@ -24,3 +27,25 @@ user_frontend/.cache/
 # ======================
 .DS_Store
 Thumbs.db
+
+# ======================
+# Docker
+# ======================
+# Images/containers
+docker-compose.override.yml
+docker-compose.*.yml
+
+# Docker build cache
+**/.docker
+**/.dockerignore
+
+# Docker volumes (local)
+*.env
+*.local
+
+# Nginx logs
+**/nginx/*.log
+
+# MySQL data
+*.sql
+*.db
