@@ -87,6 +87,6 @@ export class NavbarComponent implements OnInit {
     this.userRole = '';
     
     // Rediriger vers la page de connexion
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 }

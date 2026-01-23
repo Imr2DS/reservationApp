@@ -37,7 +37,7 @@
   font-weight: 700;
 }
 
-.btn-new-reservation {
+.btn-my-reservation {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -54,13 +54,13 @@
   text-decoration: none;
 }
 
-.btn-new-reservation:hover {
+.btn-my-reservation:hover {
   background: #f0fdf4;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.btn-new-reservation .icon {
+.btn-my-reservation .icon {
   font-size: 1.25rem;
   font-weight: bold;
 }

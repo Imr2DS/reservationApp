@@ -1,0 +1,77 @@
+.details-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+}
+
+/* Titles */
+.details-container h2 {
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  color: #2c3e50;
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 0.5rem;
+}
+
+.details-container h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #34495e;
+}
+
+/* Loading & error */
+.details-container div[ng-reflect-ng-if="true"] {
+  margin: 0.5rem 0;
+}
+
+.details-container .error {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* Resource details */
+.details-container p {
+  margin: 0.4rem 0;
+  line-height: 1.5;
+}
+
+.details-container p b {
+  color: #555;
+}
+
+/* Separator */
+.details-container hr {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Reservations */
+.details-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.details-container li {
+  background: #f8f9fa;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+  border-left: 4px solid #3498db;
+}
+
+.details-container li b {
+  color: #2c3e50;
+}
+
+/* Empty state */
+.details-container div {
+  font-style: italic;
+  color: #777;
+}
