@@ -34,19 +34,13 @@ export class LoginComponent {
 
     this.userService.login(this.email, this.motDePasse).subscribe({
       next: (response: any) => {
-
-        // ✅ STOCKAGE COMPLET (TOKEN + ROLE + USER)
         this.userService.saveUser(
-          {
-            id: response.id,
-            email: response.email,
-            role: response.role,
-            nom: response.nom,
-            prenom: response.prenom
-          },
+          response.user,
           response.token,
           response.role
         );
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('role', response.role);
 
         // 🔁 Redirection selon rôle
         if (response.role === 'ADMIN') {

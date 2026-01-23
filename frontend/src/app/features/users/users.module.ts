@@ -11,6 +11,7 @@ import { ReservationFormComponent } from './reservations/reservation-form/reserv
 import { ReservationDetailsComponent } from './reservations/reservation-details/reservation-details.component';
 import { ResourceDetailsComponent } from './resource-details/resource-details.component';
 import { UsersComponent } from './users/users.component';
+import { MesReservationsComponent } from './mes-reservations/mes-reservations.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { UsersComponent } from './users/users.component';
     ReservationFormComponent,
     ReservationDetailsComponent,
     ResourceDetailsComponent,
-    UsersComponent
+    UsersComponent,
+    MesReservationsComponent
   ],
   imports: [
     CommonModule,

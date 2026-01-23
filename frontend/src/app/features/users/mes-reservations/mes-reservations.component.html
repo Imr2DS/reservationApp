@@ -1,0 +1,59 @@
+<app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
+<app-sidebar [isOpen]="isSidebarOpen" (close)="closeSidebar()"></app-sidebar>
+
+<div class="page-container">
+  
+  <div class="page-header">
+    <h1>Mes Réservations</h1>
+    
+  </div>
+
+  <div *ngIf="loading" class="loading-spinner">
+    Chargement...
+  </div>
+
+  <div *ngIf="errorMessage" class="alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && myReservations.length === 0" class="empty-state">
+    <p>Vous n'avez aucune réservation en cours.</p>
+    <a routerLink="/users/user-home">Parcourir les ressources</a>
+  </div>
+
+  <div class="reservations-list" *ngIf="!loading && myReservations.length > 0">
+    
+    <div class="reservation-card" *ngFor="let res of myReservations">
+      
+      <div class="card-header">
+        <h3>{{ resourcesMap[res.resourceId]?.nom || 'Ressource inconnue' }}</h3>
+        <span class="badge" [class.badge-confirmed]="res.status === 'CONFIRMED'">
+          {{ res.status }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <div class="date-row">
+          <span class="label">Début:</span>
+          <span class="value">{{ res.startDate | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="date-row">
+          <span class="label">Fin:</span>
+          <span class="value">{{ res.endDate | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <div class="type-row">
+          <span class="label">Type:</span>
+          <span class="value">{{ resourcesMap[res.resourceId]?.type }}</span>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="btn-edit" (click)="editReservation(res.id)">Modifier</button>
+        <button class="btn-cancel" (click)="deleteReservation(res.id)">Annuler</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

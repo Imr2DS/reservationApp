@@ -6,7 +6,7 @@ import { ReservationFormComponent } from './reservations/reservation-form/reserv
 import { ResourceDetailsComponent } from './resource-details/resource-details.component';
 import { ReservationListComponent } from './reservations/reservation-list/reservation-list.component';
 import { UsersComponent } from './users/users.component';
-
+import { MesReservationsComponent } from './mes-reservations/mes-reservations.component';
 const routes: Routes = [
   {
     path: '',
@@ -14,6 +14,7 @@ const routes: Routes = [
     children: [
       { path: 'user-home', component: UserHomeComponent },
       { path: 'reservations', component: ReservationListComponent },
+      { path: 'Mesreservations', component: MesReservationsComponent },
       { path: 'reservations/new', component: ReservationFormComponent },
       { path: 'reservations/:id', component: ReservationDetailsComponent },
       { path: 'reservations/edit/:id', component: ReservationFormComponent },

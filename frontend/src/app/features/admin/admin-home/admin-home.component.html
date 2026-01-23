@@ -24,7 +24,7 @@
         placeholder="Rechercher une ressource..."
         class="search-input"
       />
-      <span class="search-icon">🔍</span>
+      <span class="search-icon"></span>
     </div>
 
     <div class="filter-group">
@@ -54,7 +54,7 @@
 
   <!-- Error Message -->
   <div *ngIf="errorMessage" class="alert-error">
-    <span class="alert-icon">⚠️</span>
+    <span class="alert-icon"></span>
     {{ errorMessage }}
     <button class="alert-close" (click)="errorMessage = ''">×</button>
   </div>
@@ -85,10 +85,10 @@
       </div>
 
       <div class="card-footer">
-        <button class="btn-edit" (click)="editResource(resource.id)">✏️ Modifier</button>
-        <button class="btn-delete" (click)="deleteResource(resource.id)">🗑️ Supprimer</button>
-        <button class="btn-info" (click)="viewDetails(resource.id)">🔍 Détails</button>
-        <button class="btn-stats" (click)="viewStats(resource.id)">📊 Stats</button>
+        <button class="btn-edit" (click)="editResource(resource.id)"> Modifier</button>
+        <button class="btn-delete" (click)="deleteResource(resource.id)"> Supprimer</button>
+        <button class="btn-info" (click)="viewDetails(resource.id)"> Détails</button>
+        <button class="btn-stats" (click)="viewStats(resource.id)"> Stats</button>
       </div>
 
     </div>
@@ -96,7 +96,7 @@
 
   <!-- Empty State -->
   <div *ngIf="!loading && filteredResources.length === 0" class="empty-state">
-    <div class="empty-icon">📦</div>
+    <div class="empty-icon"></div>
     <h3>Aucune ressource trouvée</h3>
     <p>
       {{ searchTerm || filterType
