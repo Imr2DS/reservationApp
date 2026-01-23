@@ -34,23 +34,33 @@ export class LoginComponent {
 
     this.userService.login(this.email, this.motDePasse).subscribe({
       next: (response: any) => {
-        this.userService.saveUser(
-          response.user,
-          response.token,
-          response.role
-        );
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('role', response.role);
 
-        // 🔁 Redirection selon rôle
-        if (response.role === 'ADMIN') {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/users']);
+          const user = {
+            id: response.id,
+            nom: response.nom,
+            prenom: response.prenom,
+            email: response.email,
+            role: response.role
+          };
+          console.log('LOGIN RESPONSE:', response);
+          console.log('STORED USER:', localStorage.getItem('user'));
+          console.log('STORED ROLE:', localStorage.getItem('role'));
+          this.userService.saveUser(
+            user,
+            response.token,
+            response.role
+          );
+
+          // 🔁 Redirection selon rôle
+          if (response.role === 'ADMIN') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/users/user-home']);
+          }
+
+          this.isLoading = false;
         }
-
-        this.isLoading = false;
-      },
+        ,
       error: (err) => {
         this.isLoading = false;
         this.errorMessage =

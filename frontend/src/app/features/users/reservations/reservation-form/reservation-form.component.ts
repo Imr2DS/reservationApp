@@ -118,7 +118,8 @@ export class ReservationFormComponent implements OnInit {
 
     const start = this.formatDateTime(form.startDate);
     const end = this.formatDateTime(form.endDate);
-
+    console.log('USER FROM STORAGE:', localStorage.getItem('user'));
+    console.log('USER ID:', userId);
     // ⚠️ payload EXACT attendu par le backend
     const reservation = {
       resourceId: +form.resourceId,
